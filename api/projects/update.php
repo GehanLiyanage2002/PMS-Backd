@@ -1,6 +1,5 @@
 <?php
 require_once '../../config/db.php';
-header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
@@ -23,7 +22,12 @@ try {
     $stmt = $pdo->prepare("UPDATE projects SET title = ?, description = ?, start_date = ?, end_date = ? WHERE id = ?");
     $stmt->execute([$data->title, $data->description, $data->start_date, $data->end_date, $data->id]);
 
-    echo json_encode(["success" => true, "message" => "Project updated successfully"]);
+    $updated = $stmt->rowCount();
+    if ($updated) {
+        echo json_encode(["success" => true, "message" => "Project updated successfully"]);
+    } else {
+        echo json_encode(["success" => false, "message" => "No changes made or invalid project ID"]);
+    }
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Failed to update project"]);
+    echo json_encode(["success" => false, "message" => "Failed to update project: " . $e->getMessage()]);
 }
