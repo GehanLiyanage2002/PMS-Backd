@@ -1,5 +1,6 @@
 <?php
-require_once '../../config/db.php';
+// /PMS-Backd/api/projects/create.php
+require_once '../../config/db.php'; // ✅ your DB connection
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST");
